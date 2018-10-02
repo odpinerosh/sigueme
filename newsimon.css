@@ -1,0 +1,96 @@
+body {
+	background: #000000;
+	color: #ffffff;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.header {
+	height: 10vh;
+}
+
+.footer {
+	height: 15vh;
+	margin-top: 20px;
+	display: grid;
+	grid-template-columns: 10% 80% 10%;
+	grid-template-rows: 100%;
+	justify-items: center;
+}
+
+.content {
+	display: grid;
+	grid-template: 100% / 100%;
+	justify-items: center;
+}
+
+.simon {
+    height: 60vh;
+    width: 60vh;
+    display: grid;
+    grid-template: 50% 50% / 50% 50%;
+    grid-template-areas: "violeta celeste"
+    					 "verde naranja";
+    border-radius: 50%;
+    overflow: hidden;
+}    
+
+.color:hover {
+
+}
+
+.celeste {
+	grid-area: celeste;
+	background: #0000FF;
+}
+
+.celeste.Secuencia {
+	opacity: 0.3;
+}
+
+.violeta {
+	grid-area: violeta;
+	background: #FF0000;
+}
+
+.violeta.Secuencia {
+	opacity: 0.3;
+}
+
+.verde {
+	grid-area: verde;
+	background: #008000;
+}
+
+.verde.Secuencia {
+	opacity: 0.3;
+}
+
+.naranja {
+	grid-area: naranja;
+	background: #FFD700;
+}
+
+.naranja.Secuencia {
+	opacity: 0.3;
+}
+
+.btn {
+	border: 2px solid #2e518b;
+	padding: 10px 20px;
+	background-color: #2e518b; 
+	color: #ffffff; 
+	font-size: 4vh;
+	text-decoration: none; 
+	font-family: 'Helvetica', sans-serif; 
+	border-radius: 5px; 
+	transition: .5s ease;
+}
+
+.btn:hover {
+	
+	background-color: #000000;
+}
+
+.btn:active {
+	transform: scale(.9);
+}

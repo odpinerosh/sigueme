@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Sígueme...</title>
+	<link rel="stylesheet" href="newsimon.css">
+	<link rel="icon" type="image/png" href="bento.png" />
+</head>
+<body>
+	<div class="header"></div>
+	<div class="content">
+		<div class="simon">
+			<div class="color celeste" id="celeste"></div>
+			<div class="color violeta" id="violeta"></div>
+			<div class="color verde" id="verde"></div>
+			<div class="color naranja" id="naranja"></div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="izq"></div>
+		<div class="cen"><button class="btn btnJugar" onclick="start()" id="btn">¡Jugar!</button></div>
+		<div class="der"></div>
+	</div>
+
+	<script src="dist/sweetalert2.all.min.js"></script>
+	<script type="text/javascript">
+		
+		const LEVELS = 10;
+		const celeste = document.getElementById('celeste');
+		const violeta = document.getElementById('violeta');
+		const verde = document.getElementById('verde');
+		const naranja = document.getElementById('naranja'); 
+
+		const COLORES = {celeste, violeta, verde, naranja};
+		const arrColores = [celeste, violeta, verde, naranja];
+		let intNivelActual = 1
+		let intCuentaClic = 0;
+		let intArrSecuencia = undefined
+		
+		auxFunc = function() {userPlay(event, intArrSecuencia)};
+
+
+		function genSecuencia() {
+			return arrSecuencia = new Array(LEVELS).fill(0).map(n => Math.floor(Math.random() * 4));
+		}
+
+		function addListener() {
+			for (let color of arrColores) {
+				color.addEventListener('click', auxFunc);
+			}
+		}
+
+		function remListener() {
+			for (let color of arrColores) {
+				color.removeEventListener('click', auxFunc);
+			}
+		}
+
+		function addClass(obj, ms) {
+
+			COLORES[obj].classList.add('Secuencia');
+			setTimeout( () => removeClass(obj), ms);
+
+		}
+
+		function removeClass(obj) {
+			COLORES[obj].classList.remove('Secuencia');
+		}
+
+		function recorrerSimon(arr, args) {
+
+			
+			let objElemento = '';
+
+			intCuentaClic = 0;
+
+			for(let i=0; i<args; i++) {
+			
+				let strColor = '';
+				switch (arr[i]) {
+					case 0:
+						strColor = 'celeste';
+						break;
+					case 1:
+						strColor = 'violeta';
+						break;
+					case 2:
+						strColor = 'verde';
+						break;
+					case 3:
+						strColor = 'naranja';
+						break;
+				}
+			
+				//console.log(strColor); 
+				setTimeout( () => addClass(strColor, 400), 1000 * i);
+
+			}; 
+				
+			addListener();
+		}
+
+
+		function userPlay(ev, intArreglo) {
+			//console.log(ev.target.id);
+			let strEleccion = ev.target.id;
+			let intColor = 0; //debugger;
+
+			addClass(strEleccion, 100);
+
+		
+			switch (strEleccion) {
+				case 'celeste':
+					intColor = 0;
+					break;
+				case 'violeta':
+					intColor = 1;
+					break;
+				case 'verde':
+					intColor = 2;
+					break;
+				case 'naranja':
+					intColor = 3;
+					break;
+			}
+
+			//debugger;
+			if (intColor === intArreglo[intCuentaClic]) {
+				
+				//Si el color que elige el usuario es correcto
+				intCuentaClic++; //Usuario pasó ese nivel
+
+				if (intCuentaClic === intNivelActual) {
+
+					//remListener();
+					intNivelActual++; //Cambia el nivel del juego
+					
+					if (intNivelActual === (LEVELS+1)) { //Ya ganó 
+
+						setTimeout( () => swal({
+							  title: '¡Felicitaciones!',
+							  text: "¡Ganaste!",
+							  type: 'success',
+							  showCancelButton: false,
+							  confirmButtonColor: '#3085d6',
+							  cancelButtonColor: '#d33',
+							  confirmButtonText: 'Ok'
+							}).then((result) => {
+							  if (result.value) {
+							    setTimeout( ()=> location.reload(true), 500);
+							  }
+							}), 500);	
+					}
+
+					
+					else {
+						
+						let txtNivel = 'Siguiente nivel: ' + intNivelActual;
+						setTimeout( () => swal({
+						  title: '¡Muy bien!',
+						  text:  txtNivel,
+						  type: 'info',
+						  showCancelButton: false,
+						  confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: '¡Vamos!'
+						}).then((result) => {
+						  if (result.value) {
+						    intCuentaClic = 0;
+							setTimeout( ()=> recorrerSimon(intArreglo, intNivelActual), 500);
+						  }
+						}), 500);
+
+
+					}
+				}
+
+				else {
+					addListener();
+				}
+			}
+
+			else {
+				swal({
+				  type: 'error',
+				  title: 'Oops...',
+				  text: 'Lo siento. ¡Perdiste!'
+				})
+				remListener();
+				
+			}
+
+		}
+
+		function start() {
+			//debugger;
+			//let btnButton = document.getElementById('btn');
+			document.getElementById('btn').style.display = 'none';
+			if(intArrSecuencia === undefined) {
+				intArrSecuencia = genSecuencia(); 
+
+				recorrerSimon(intArrSecuencia, intNivelActual);
+			}
+			
+			
+		}
+
+	</script>
+</body>
+</html>
